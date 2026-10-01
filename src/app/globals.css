@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+/* Deep forest green + champagne gold on a neutral stone white. */
+@theme {
+  --color-forest-50: #edf3f0;
+  --color-forest-100: #d5e3dc;
+  --color-forest-200: #abc8ba;
+  --color-forest-300: #7ba693;
+  --color-forest-400: #4f846e;
+  --color-forest-500: #326853;
+  --color-forest-600: #225242;
+  --color-forest-700: #194135;
+  --color-forest-800: #123128;
+  --color-forest-900: #0c241e;
+  --color-forest-950: #061613;
+
+  --color-gold-50: #fbf8f1;
+  --color-gold-100: #f3ebd9;
+  --color-gold-200: #e8d8b4;
+  --color-gold-300: #dcc28c;
+  --color-gold-400: #cca968;
+  --color-gold-500: #b38d4d;
+  --color-gold-600: #93713b;
+  --color-gold-700: #6f552e;
+
+  --color-ivory: #f7f7f5;
+  --color-parchment: #eceeeb;
+  --color-ink: #0f1a17;
+
+  --font-sans: var(--font-instrument-sans), var(--font-mukta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-instrument-serif), var(--font-deva-serif), ui-serif, Georgia, serif;
+  --font-caps: var(--font-instrument-sans), var(--font-mukta), ui-sans-serif, system-ui, sans-serif;
+  --font-deva: var(--font-mukta), var(--font-instrument-sans), sans-serif;
+
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-marquee: marquee 38s linear infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    /* Instrument Serif ships a single weight: never fake a bold. */
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-gold-200);
+    color: var(--color-forest-900);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-400);
+    outline-offset: 3px;
+  }
+}
+
+@utility container-x {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility text-gold-gradient {
+  background: linear-gradient(100deg, #f2e3bf 0%, #d6b679 40%, #a98243 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* keeps italic overhangs from being clipped */
+  padding-right: 0.08em;
+}
+
+/* Champagne button with a soft sheen sweep on hover. */
+@utility btn-gold {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(135deg, #e9d3a1 0%, #cca968 45%, #b38d4d 100%);
+  color: var(--color-forest-950);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.45) inset,
+    0 14px 30px -14px rgb(179 141 77 / 0.65);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(115deg, transparent 30%, rgb(255 255 255 / 0.55) 50%, transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover::after {
+    transform: translateX(120%);
+  }
+}
+
+/* Fine diagonal pinstripe used on dark panels. */
+@utility bg-pinstripe {
+  background-image: repeating-linear-gradient(135deg, rgb(255 255 255 / 0.022) 0 1px, transparent 1px 14px);
+}
+
+/* Film grain for dark panels. */
+@utility bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@utility gold-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold-400), transparent);
+}
+
+/* Nepali pages: Devanagari needs room for matras, no letter-spacing (it breaks conjuncts)
+   and no synthetic italics. */
+html[lang="ne"] :is(h1, h2, h3, .font-display) {
+  line-height: 1.32 !important;
+}
+html[lang="ne"] [class*="tracking-"]:not(.keep-tracking) {
+  letter-spacing: 0 !important;
+}
+html[lang="ne"] :is(em, .italic):not([lang="en"]) {
+  font-style: normal;
+}
+
+/* Scroll reveal. Hidden only when scripting is enabled, so content is never lost without JS. */
+@media (scripting: enabled) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal][data-shown] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
