@@ -1,6 +1,8 @@
 {
-  "name": "star-access-to-justice",
+  "name": "star-law-firm-website",
   "version": "0.1.0",
+  "description": "Website for Star Access to Justice Law Firm (Notary Public Office & Authorized Translation) in Kathmandu, Nepal.",
+  "author": "Ajit0o7",
   "private": true,
   "scripts": {
     "dev": "next dev",
